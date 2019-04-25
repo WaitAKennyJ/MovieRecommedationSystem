@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzj.dao.RecommendationMapper">
+  <resultMap id="BaseResultMap" type="com.wzj.model.Recommendation">
+    <id column="UserID" jdbcType="INTEGER" property="userID" />
+    <result column="SelectMovie" jdbcType="VARCHAR" property="selectMovie" />
+    <result column="RecommendMovie" jdbcType="VARCHAR" property="recommendMovie" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    UserID, SelectMovie, RecommendMovie
+  </sql>
+  <select id="selectByExample" parameterType="com.wzj.model.RecommendationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from Recommendation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Recommendation
+    where UserID = #{userID,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Recommendation
+    where UserID = #{userID,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wzj.model.RecommendationExample">
+    delete from Recommendation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wzj.model.Recommendation">
+    insert into Recommendation (UserID, SelectMovie, RecommendMovie
+      )
+    values (#{userID,jdbcType=INTEGER}, #{selectMovie,jdbcType=VARCHAR}, #{recommendMovie,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wzj.model.Recommendation">
+    insert into Recommendation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userID != null">
+        UserID,
+      </if>
+      <if test="selectMovie != null">
+        SelectMovie,
+      </if>
+      <if test="recommendMovie != null">
+        RecommendMovie,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userID != null">
+        #{userID,jdbcType=INTEGER},
+      </if>
+      <if test="selectMovie != null">
+        #{selectMovie,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendMovie != null">
+        #{recommendMovie,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wzj.model.RecommendationExample" resultType="java.lang.Long">
+    select count(*) from Recommendation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update Recommendation
+    <set>
+      <if test="record.userID != null">
+        UserID = #{record.userID,jdbcType=INTEGER},
+      </if>
+      <if test="record.selectMovie != null">
+        SelectMovie = #{record.selectMovie,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recommendMovie != null">
+        RecommendMovie = #{record.recommendMovie,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update Recommendation
+    set UserID = #{record.userID,jdbcType=INTEGER},
+      SelectMovie = #{record.selectMovie,jdbcType=VARCHAR},
+      RecommendMovie = #{record.recommendMovie,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wzj.model.Recommendation">
+    update Recommendation
+    <set>
+      <if test="selectMovie != null">
+        SelectMovie = #{selectMovie,jdbcType=VARCHAR},
+      </if>
+      <if test="recommendMovie != null">
+        RecommendMovie = #{recommendMovie,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UserID = #{userID,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wzj.model.Recommendation">
+    update Recommendation
+    set SelectMovie = #{selectMovie,jdbcType=VARCHAR},
+      RecommendMovie = #{recommendMovie,jdbcType=VARCHAR}
+    where UserID = #{userID,jdbcType=INTEGER}
+  </update>
+</mapper>
